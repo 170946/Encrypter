@@ -14,6 +14,7 @@ public class Enigma{
         }
         
         for(int i = 0; i < sequence.length; i++){
+            if(sequence[i] == ' ') continue;
             sequence[i] = (char)((sequence[i] - 65 + shift)%26 + 65);
         }
         
@@ -36,7 +37,8 @@ public class Enigma{
         }
         
         for(int i = 0; i < sequence.length; i++){
-            sequence[i] = (char)((sequence[i] - 65 - shift)%26 + 65);
+            if(sequence[i] == ' ') continue;
+            sequence[i] = (char)((sequence[i] - 65 - shift + 26)%26 + 65);
         }
         
         String result = "";
@@ -51,7 +53,7 @@ public class Enigma{
         
     private static long prime1 = 1913L;
     private static long prime2 = 2027L;
-    private static int exponent = 5;
+    private static int publicKey = 5;
         
     public static long encryptRSA(String input){
         String upper = input.toUpperCase();
@@ -67,7 +69,7 @@ public class Enigma{
         }
         
         long intStringEncrypted = 1L;
-        for (int i = 1; i <= exponent; i++){
+        for (int i = 1; i <= publicKey; i++){
             intStringEncrypted = (intStringEncrypted * intString) % (prime1 * prime2);
         }
         
@@ -79,7 +81,7 @@ public class Enigma{
         
         long intStringDecrypted = 1L;
         
-        int privateKey = inverse(exponent, (prime1 - 1) * (prime2 - 1));
+        int privateKey = inverse(publicKey, (prime1 - 1) * (prime2 - 1));
         
         for(int i = 1; i <= privateKey; i++){
             intStringDecrypted = (intStringDecrypted * input) % (prime1 * prime2);
