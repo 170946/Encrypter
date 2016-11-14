@@ -8,5 +8,5 @@ comment2.target=long\ encryptRSA(java.lang.String)
 comment3.params=input\ length
 comment3.target=java.lang.String\ decryptRSA(long,\ int)
 comment4.params=n\ mod
-comment4.target=int\ inverse(int,\ long)
+comment4.target=long\ inverse(long,\ long)
 numComments=5

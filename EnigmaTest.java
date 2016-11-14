@@ -38,7 +38,7 @@ public class EnigmaTest{
                   System.out.println(Enigma.decryptCaesarShift(s));
               }
               else if (cOrR.equals("2")){
-                  System.out.println("Enter the int you would like to encrypt, a space, followed by the length of the String encrypted");
+                  System.out.println("Enter the int you would like to decrypt, a space, followed by the length of the String encrypted");
                   long s = kb.nextLong();
                   int t = kb.nextInt();
                   System.out.println(Enigma.decryptRSA(s, t));

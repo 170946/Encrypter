@@ -1,3 +1,4 @@
+import java.math.*;
 public class Enigma{
     /** CAESAR SHIFT **/
     
@@ -51,45 +52,55 @@ public class Enigma{
     
     /** RSA ENCRYPTION **/
         
-    private static long prime1 = 1913L;
-    private static long prime2 = 2027L;
-    private static int publicKey = 5;
+    private static long prime1 = 11087L;
+    private static long prime2 = 16417L;
+    private static long publicKey = 5L;
         
     public static long encryptRSA(String input){
         String upper = input.toUpperCase();
         upper = upper.replaceAll("\\s*", ""); //gets rid of spaces
         
         
-        long intString = 0L;
-        
+        long longString = 0L;
         for(int i = 0; i < upper.length(); i++){
             int digit = upper.charAt(i) - 65;
-            intString *= 26;
-            intString += digit;
+            longString *= 26;
+            longString += digit;
         }
         
-        long intStringEncrypted = 1L;
+        long longStringEncrypted = 1L;
         for (int i = 1; i <= publicKey; i++){
-            intStringEncrypted = (intStringEncrypted * intString) % (prime1 * prime2);
+            if((longStringEncrypted * longString) % (prime1 * prime2) < 0){
+                longStringEncrypted = ((longStringEncrypted * longString) % (prime1 * prime2)) + prime1 * prime2;
+            }
+            else{
+                longStringEncrypted = (longStringEncrypted * longString) % (prime1 * prime2);
+            }
         }
         
-        return intStringEncrypted;
+        return longStringEncrypted;
     }
+    
     
     public static String decryptRSA(long input, int length){
         String result = "";
         
-        long intStringDecrypted = 1L;
+        long longStringDecrypted = 1L;
         
-        int privateKey = inverse(publicKey, (prime1 - 1) * (prime2 - 1));
-        
-        for(int i = 1; i <= privateKey; i++){
-            intStringDecrypted = (intStringDecrypted * input) % (prime1 * prime2);
+        long privateKey = inverse(publicKey, (prime1 - 1) * (prime2 - 1));
+        for(long i = 1L; i <= privateKey; i++){
+            if((longStringDecrypted * input) % (prime1 * prime2) < 0){
+                longStringDecrypted = ((longStringDecrypted * input) % (prime1 * prime2)) + prime1 * prime2;
+            }
+            else{
+                longStringDecrypted = (longStringDecrypted * input) % (prime1 * prime2);
+            }
         }
         
+        
         for(int i = 1; i <= length; i++){
-            long digit = intStringDecrypted % 26;
-            intStringDecrypted = intStringDecrypted / 26;
+            long digit = longStringDecrypted % 26;
+            longStringDecrypted = longStringDecrypted / 26;
             
             result = (char)(digit + 65) + result;
         }
@@ -97,9 +108,10 @@ public class Enigma{
         return result;
     }
     
-    private static int inverse(int n, long mod){
-        int result = 0;
-        for(int k = 1; k < mod; k++){
+    
+    public static long inverse(long n, long mod){
+        long result = 0;
+        for(long k = 1L; k < mod; k++){
             if(n * k % mod == 1){
                 result = k;
                 break;
